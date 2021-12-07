@@ -25,6 +25,7 @@ import (
 
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
+	"github.com/ecmgo/healthcheck/checks"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -39,11 +40,11 @@ func Example() {
 	upstreamHost := "upstream.example.com"
 	health.AddReadinessCheck(
 		"upstream-dep-dns",
-		DNSResolveCheck(upstreamHost, 50*time.Millisecond))
+		checks.DNSResolveCheck(upstreamHost, 50*time.Millisecond))
 
 	// Add a liveness check to detect Goroutine leaks. If this fails we want
 	// to be restarted/rescheduled.
-	health.AddLivenessCheck("goroutine-threshold", GoroutineCountCheck(100))
+	health.AddLivenessCheck("goroutine-threshold", checks.GoroutineCountCheck(100))
 
 	// Serve http://0.0.0.0:8080/live and http://0.0.0.0:8080/ready endpoints.
 	// go http.ListenAndServe("0.0.0.0:8080", health)
@@ -69,7 +70,7 @@ func Example_database() {
 
 	// Add a readiness check to we don't receive requests unless we can reach
 	// the database with a ping in <1 second.
-	health.AddReadinessCheck("database", DatabasePingCheck(database, 1*time.Second))
+	health.AddReadinessCheck("database", checks.DatabasePingCheck(database, 1*time.Second))
 
 	// Serve http://0.0.0.0:8080/live and http://0.0.0.0:8080/ready endpoints.
 	// go http.ListenAndServe("0.0.0.0:8080", health)
@@ -100,13 +101,13 @@ func Example_advanced() {
 	upstreamAddr := "upstream.example.com:5432"
 	health.AddReadinessCheck(
 		"upstream-dep-tcp",
-		Async(TCPDialCheck(upstreamAddr, 50*time.Millisecond), 10*time.Second))
+		Async(checks.TCPDialCheck(upstreamAddr, 50*time.Millisecond), 10*time.Second))
 
 	// Add a readiness check against the health of an upstream HTTP dependency
 	upstreamURL := "http://upstream-svc.example.com:8080/healthy"
 	health.AddReadinessCheck(
 		"upstream-dep-http",
-		HTTPGetCheck(upstreamURL, 500*time.Millisecond))
+		checks.HTTPGetCheck(upstreamURL, 500*time.Millisecond))
 
 	// Implement a custom check with a 50 millisecond timeout.
 	health.AddLivenessCheck("custom-check-with-timeout", Timeout(func() error {

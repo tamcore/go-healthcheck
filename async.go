@@ -18,6 +18,8 @@ import (
 	"context"
 	"errors"
 	"time"
+
+	"github.com/ecmgo/healthcheck/checks"
 )
 
 // ErrNoData is returned if the first call of an Async() wrapped Check has not
@@ -30,7 +32,7 @@ var ErrNoData = errors.New("no data yet")
 // interval to execute, the next execution will happen immediately.
 //
 // Note: if you need to clean up the background goroutine, use AsyncWithContext().
-func Async(check Check, interval time.Duration) Check {
+func Async(check checks.Check, interval time.Duration) checks.Check {
 	return AsyncWithContext(context.Background(), check, interval)
 }
 
@@ -40,7 +42,7 @@ func Async(check Check, interval time.Duration) Check {
 // than the interval to execute, the next execution will happen immediately.
 //
 // Note: if you don't need to cancel execution (because this runs forever), use Async()
-func AsyncWithContext(ctx context.Context, check Check, interval time.Duration) Check {
+func AsyncWithContext(ctx context.Context, check checks.Check, interval time.Duration) checks.Check {
 	// create a chan that will buffer the most recent check result
 	result := make(chan error, 1)
 

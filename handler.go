@@ -18,21 +18,23 @@ import (
 	"encoding/json"
 	"net/http"
 	"sync"
+
+	"github.com/ecmgo/healthcheck/checks"
 )
 
 // basicHandler is a basic Handler implementation.
 type basicHandler struct {
 	http.ServeMux
 	checksMutex     sync.RWMutex
-	livenessChecks  map[string]Check
-	readinessChecks map[string]Check
+	livenessChecks  map[string]checks.Check
+	readinessChecks map[string]checks.Check
 }
 
 // NewHandler creates a new basic Handler
 func NewHandler() Handler {
 	h := &basicHandler{
-		livenessChecks:  make(map[string]Check),
-		readinessChecks: make(map[string]Check),
+		livenessChecks:  make(map[string]checks.Check),
+		readinessChecks: make(map[string]checks.Check),
 	}
 	h.Handle("/live", http.HandlerFunc(h.LiveEndpoint))
 	h.Handle("/ready", http.HandlerFunc(h.ReadyEndpoint))
@@ -47,19 +49,19 @@ func (s *basicHandler) ReadyEndpoint(w http.ResponseWriter, r *http.Request) {
 	s.handle(w, r, s.readinessChecks, s.livenessChecks)
 }
 
-func (s *basicHandler) AddLivenessCheck(name string, check Check) {
+func (s *basicHandler) AddLivenessCheck(name string, check checks.Check) {
 	s.checksMutex.Lock()
 	defer s.checksMutex.Unlock()
 	s.livenessChecks[name] = check
 }
 
-func (s *basicHandler) AddReadinessCheck(name string, check Check) {
+func (s *basicHandler) AddReadinessCheck(name string, check checks.Check) {
 	s.checksMutex.Lock()
 	defer s.checksMutex.Unlock()
 	s.readinessChecks[name] = check
 }
 
-func (s *basicHandler) collectChecks(checks map[string]Check, resultsOut map[string]string, statusOut *int) {
+func (s *basicHandler) collectChecks(checks map[string]checks.Check, resultsOut map[string]string, statusOut *int) {
 	s.checksMutex.RLock()
 	defer s.checksMutex.RUnlock()
 	for name, check := range checks {
@@ -72,7 +74,7 @@ func (s *basicHandler) collectChecks(checks map[string]Check, resultsOut map[str
 	}
 }
 
-func (s *basicHandler) handle(w http.ResponseWriter, r *http.Request, checks ...map[string]Check) {
+func (s *basicHandler) handle(w http.ResponseWriter, r *http.Request, checks ...map[string]checks.Check) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return

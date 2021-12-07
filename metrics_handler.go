@@ -17,6 +17,7 @@ package healthcheck
 import (
 	"net/http"
 
+	"github.com/ecmgo/healthcheck/checks"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -36,11 +37,11 @@ func NewMetricsHandler(registry prometheus.Registerer, namespace string) Handler
 	}
 }
 
-func (h *metricsHandler) AddLivenessCheck(name string, check Check) {
+func (h *metricsHandler) AddLivenessCheck(name string, check checks.Check) {
 	h.handler.AddLivenessCheck(name, h.wrap(name, check))
 }
 
-func (h *metricsHandler) AddReadinessCheck(name string, check Check) {
+func (h *metricsHandler) AddReadinessCheck(name string, check checks.Check) {
 	h.handler.AddReadinessCheck(name, h.wrap(name, check))
 }
 
@@ -56,7 +57,7 @@ func (h *metricsHandler) ReadyEndpoint(w http.ResponseWriter, r *http.Request) {
 	h.handler.ReadyEndpoint(w, r)
 }
 
-func (h *metricsHandler) wrap(name string, check Check) Check {
+func (h *metricsHandler) wrap(name string, check checks.Check) checks.Check {
 	h.registry.MustRegister(prometheus.NewGaugeFunc(
 		prometheus.GaugeOpts{
 			Namespace:   h.namespace,

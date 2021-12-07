@@ -17,6 +17,8 @@ package healthcheck
 import (
 	"fmt"
 	"time"
+
+	"github.com/ecmgo/healthcheck/checks"
 )
 
 // TimeoutError is the error returned when a Timeout-wrapped Check takes too long
@@ -38,7 +40,7 @@ func (e timeoutError) Temporary() bool {
 
 // Timeout adds a timeout to a Check. If the underlying check takes longer than
 // the timeout, it returns an error.
-func Timeout(check Check, timeout time.Duration) Check {
+func Timeout(check checks.Check, timeout time.Duration) checks.Check {
 	return func() error {
 		c := make(chan error, 1)
 		go func() { c <- check() }()

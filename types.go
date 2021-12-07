@@ -16,10 +16,9 @@ package healthcheck
 
 import (
 	"net/http"
-)
 
-// Check is a health/readiness check.
-type Check func() error
+	"github.com/ecmgo/healthcheck/checks"
+)
 
 // Handler is an http.Handler with additional methods that register health and
 // readiness checks. It handles handle "/live" and "/ready" HTTP
@@ -33,14 +32,14 @@ type Handler interface {
 	// application should be destroyed or restarted. A failed liveness check
 	// indicates that this instance is unhealthy, not some upstream dependency.
 	// Every liveness check is also included as a readiness check.
-	AddLivenessCheck(name string, check Check)
+	AddLivenessCheck(name string, check checks.Check)
 
 	// AddReadinessCheck adds a check that indicates that this instance of the
 	// application is currently unable to serve requests because of an upstream
 	// or some transient failure. If a readiness check fails, this instance
 	// should no longer receiver requests, but should not be restarted or
 	// destroyed.
-	AddReadinessCheck(name string, check Check)
+	AddReadinessCheck(name string, check checks.Check)
 
 	// LiveEndpoint is the HTTP handler for just the /live endpoint, which is
 	// useful if you need to attach it into your own HTTP handler tree.
