@@ -19,9 +19,9 @@ import (
 	"runtime"
 )
 
-// GoroutineCountCheck returns a Check that fails if too many goroutines are
+// GoroutineCount returns a Check that fails if too many goroutines are
 // running (which could indicate a resource leak).
-func GoroutineCountCheck(threshold int) Check {
+func GoroutineCount(threshold int) Check {
 	return func() error {
 		count := runtime.NumGoroutine()
 		if count > threshold {

@@ -20,9 +20,9 @@ import (
 	"time"
 )
 
-// GCMaxPauseCheck returns a Check that fails if any recent Go garbage
+// GCMaxPause returns a Check that fails if any recent Go garbage
 // collection pause exceeds the provided threshold.
-func GCMaxPauseCheck(threshold time.Duration) Check {
+func GCMaxPause(threshold time.Duration) Check {
 	thresholdNanoseconds := uint64(threshold.Nanoseconds())
 	return func() error {
 		var stats runtime.MemStats

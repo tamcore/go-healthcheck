@@ -9,8 +9,6 @@ Healthcheck is a library for implementing Kubernetes [liveness and readiness](ht
 
  - Integrates easily with Kubernetes. This library explicitly separates liveness vs. readiness checks instead of lumping everything into a single category of check.
 
- - Optionally exposes each check as a [Prometheus gauge](https://prometheus.io/docs/concepts/metric_types/#gauge) metric. This allows for cluster-wide monitoring and alerting on individual checks.
-
  - Supports asynchronous checks, which run in a background goroutine at a fixed interval. These are useful for expensive checks that you don't want to add latency to the liveness and readiness endpoints.
 
  - Includes a small library of generically useful checks for validating upstream DNS, TCP, HTTP, and database dependencies as well as checking basic health of the Go runtime.

@@ -20,10 +20,10 @@ import (
 	"time"
 )
 
-// HTTPGetCheck returns a Check that performs an HTTP GET request against the
+// HTTPGet returns a Check that performs an HTTP GET request against the
 // specified URL. The check fails if the response times out or returns a non-200
 // status code.
-func HTTPGetCheck(url string, timeout time.Duration) Check {
+func HTTPGet(url string, timeout time.Duration) Check {
 	client := http.Client{
 		Timeout: timeout,
 		// never follow redirects

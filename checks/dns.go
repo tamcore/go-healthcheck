@@ -21,9 +21,9 @@ import (
 	"time"
 )
 
-// DNSResolveCheck returns a Check that makes sure the provided host can resolve
+// DNSResolve returns a Check that makes sure the provided host can resolve
 // to at least one IP address within the specified timeout.
-func DNSResolveCheck(host string, timeout time.Duration) Check {
+func DNSResolve(host string, timeout time.Duration) Check {
 	resolver := net.Resolver{}
 	return func() error {
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)

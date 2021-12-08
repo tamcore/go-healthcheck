@@ -1,4 +1,4 @@
-// Copyright 2017 by the contributors.
+// Copyright 2021 by the contributors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import (
 	"time"
 )
 
-// DatabasePingCheck returns a Check that validates connectivity to a
+// DatabasePing returns a Check that validates connectivity to a
 // database/sql.DB using Ping().
-func DatabasePingCheck(database *sql.DB, timeout time.Duration) Check {
+func DatabasePing(database *sql.DB, timeout time.Duration) Check {
 	return func() error {
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()

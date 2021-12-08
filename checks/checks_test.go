@@ -24,36 +24,36 @@ import (
 )
 
 func TestTCPDialCheck(t *testing.T) {
-	assert.NoError(t, TCPDialCheck("heptio.com:80", 5*time.Second)())
-	assert.Error(t, TCPDialCheck("heptio.com:25327", 5*time.Second)())
+	assert.NoError(t, TCPDial("heptio.com:80", 5*time.Second)())
+	assert.Error(t, TCPDial("heptio.com:25327", 5*time.Second)())
 }
 
 func TestHTTPGetCheck(t *testing.T) {
-	assert.NoError(t, HTTPGetCheck("https://heptio.com", 5*time.Second)())
-	assert.Error(t, HTTPGetCheck("http://heptio.com", 5*time.Second)(), "redirect should fail")
-	assert.Error(t, HTTPGetCheck("https://heptio.com/nonexistent", 5*time.Second)(), "404 should fail")
+	assert.NoError(t, HTTPGet("https://heptio.com", 5*time.Second)())
+	assert.Error(t, HTTPGet("http://heptio.com", 5*time.Second)(), "redirect should fail")
+	assert.Error(t, HTTPGet("https://heptio.com/nonexistent", 5*time.Second)(), "404 should fail")
 }
 
 func TestDatabasePingCheck(t *testing.T) {
-	assert.Error(t, DatabasePingCheck(nil, 1*time.Second)(), "nil DB should fail")
+	assert.Error(t, DatabasePing(nil, 1*time.Second)(), "nil DB should fail")
 
 	db, _, err := sqlmock.New()
 	assert.NoError(t, err)
-	assert.NoError(t, DatabasePingCheck(db, 1*time.Second)(), "ping should succeed")
+	assert.NoError(t, DatabasePing(db, 1*time.Second)(), "ping should succeed")
 }
 
 func TestDNSResolveCheck(t *testing.T) {
-	assert.NoError(t, DNSResolveCheck("heptio.com", 5*time.Second)())
-	assert.Error(t, DNSResolveCheck("nonexistent.heptio.com", 5*time.Second)())
+	assert.NoError(t, DNSResolve("heptio.com", 5*time.Second)())
+	assert.Error(t, DNSResolve("nonexistent.heptio.com", 5*time.Second)())
 }
 
 func TestGoroutineCountCheck(t *testing.T) {
-	assert.NoError(t, GoroutineCountCheck(1000)())
-	assert.Error(t, GoroutineCountCheck(0)())
+	assert.NoError(t, GoroutineCount(1000)())
+	assert.Error(t, GoroutineCount(0)())
 }
 
 func TestGCMaxPauseCheck(t *testing.T) {
 	runtime.GC()
-	assert.NoError(t, GCMaxPauseCheck(1*time.Second)())
-	assert.Error(t, GCMaxPauseCheck(0)())
+	assert.NoError(t, GCMaxPause(1*time.Second)())
+	assert.Error(t, GCMaxPause(0)())
 }
