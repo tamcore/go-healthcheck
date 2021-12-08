@@ -19,7 +19,9 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/gsdenys/go-healthcheck/checks"
+	"log"
+
+	"github.com/gsdenys/healthcheck/checks"
 )
 
 // basicHandler is a basic Handler implementation.
@@ -75,6 +77,8 @@ func (s *basicHandler) collectChecks(checks map[string]checks.Check, resultsOut 
 }
 
 func (s *basicHandler) handle(w http.ResponseWriter, r *http.Request, checks ...map[string]checks.Check) {
+	log.SetPrefix("[ERROR]")
+
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -93,13 +97,22 @@ func (s *basicHandler) handle(w http.ResponseWriter, r *http.Request, checks ...
 	// unless ?full=1, return an empty body. Kubernetes only cares about the
 	// HTTP status code, so we won't waste bytes on the full body.
 	if r.URL.Query().Get("full") != "1" {
-		w.Write([]byte("{}\n"))
-		return
+		_, errWrite := w.Write([]byte("{}\n"))
+
+		if errWrite == nil {
+			return
+		}
+
+		log.Println("writing simple response error. Continuing for full respose", errWrite)
 	}
 
 	// otherwise, write the JSON body ignoring any encoding errors (which
 	// shouldn't really be possible since we're encoding a map[string]string).
 	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", "    ")
-	encoder.Encode(checkResults)
+	errEncode := encoder.Encode(checkResults)
+
+	if errEncode != nil {
+		log.Println("encoding http data error", errEncode)
+	}
 }

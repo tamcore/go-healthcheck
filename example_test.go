@@ -25,7 +25,7 @@ import (
 
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
-	"github.com/gsdenys/go-healthcheck/checks"
+	"github.com/gsdenys/healthcheck/checks"
 )
 
 func Example() {
@@ -60,8 +60,7 @@ func Example() {
 
 func Example_database() {
 	// Connect to a database/sql database
-	var database *sql.DB
-	database = connectToDatabase()
+	database := connectToDatabase()
 
 	// Create a Handler that we can use to register liveness and readiness checks.
 	health := NewHandler()

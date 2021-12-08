@@ -19,7 +19,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/gsdenys/go-healthcheck/checks"
+	"github.com/gsdenys/healthcheck/checks"
 )
 
 // ErrNoData is returned if the first call of an Async() wrapped Check has not
@@ -66,7 +66,8 @@ func AsyncWithContext(ctx context.Context, check checks.Check, interval time.Dur
 		update()
 
 		// loop forever or until the context is canceled
-		ticker := time.Tick(interval)
+		// ticker := time.Tick(interval)
+		ticker := time.NewTicker(interval).C
 		for {
 			select {
 			case <-ticker:

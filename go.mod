@@ -1,4 +1,4 @@
-module github.com/gsdenys/go-healthcheck
+module github.com/gsdenys/healthcheck
 
 go 1.17
 
