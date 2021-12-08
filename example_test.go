@@ -25,7 +25,7 @@ import (
 
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
-	"github.com/ecmgo/healthcheck/checks"
+	"github.com/gsdenys/go-healthcheck/checks"
 )
 
 func Example() {

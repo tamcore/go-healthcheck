@@ -19,7 +19,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/ecmgo/healthcheck/checks"
+	"github.com/gsdenys/go-healthcheck/checks"
 )
 
 // basicHandler is a basic Handler implementation.
