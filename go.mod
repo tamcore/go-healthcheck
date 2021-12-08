@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/stretchr/testify v1.7.0
+	github.com/strikesecurity/strikememongo v0.2.4
 	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
 )
 
@@ -14,7 +15,6 @@ require (
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/afero v1.5.1 // indirect
-	github.com/strikesecurity/strikememongo v0.2.4 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.0.2 // indirect
 	github.com/xdg-go/stringprep v1.0.2 // indirect
@@ -26,7 +26,6 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/kr/pretty v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.8.1
