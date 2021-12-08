@@ -9,7 +9,7 @@ Any copyright notices in this repos should specify the authors as "the contribut
 To sign your work, just add a line like this at the end of your commit message:
 
 ```
-Signed-off-by: Joe Beda <joe@heptio.com>
+Signed-off-by: John Smith <john@smith.com>
 ```
 
 This can easily be done with the `--signoff` option to `git commit`.
