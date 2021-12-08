@@ -24,6 +24,7 @@ import (
 
 func TestGCMaxPause(t *testing.T) {
 	runtime.GC()
+
 	assert.NoError(t, GCMaxPause(1*time.Second)())
 	assert.Error(t, GCMaxPause(0)())
 }

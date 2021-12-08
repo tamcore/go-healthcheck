@@ -24,14 +24,17 @@ import (
 // collection pause exceeds the provided threshold.
 func GCMaxPause(threshold time.Duration) Check {
 	thresholdNanoseconds := uint64(threshold.Nanoseconds())
+
 	return func() error {
 		var stats runtime.MemStats
 		runtime.ReadMemStats(&stats)
+
 		for _, pause := range stats.PauseNs {
 			if pause > thresholdNanoseconds {
 				return fmt.Errorf("recent GC cycle took %s > %s", time.Duration(pause), threshold)
 			}
 		}
+
 		return nil
 	}
 }

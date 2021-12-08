@@ -28,13 +28,16 @@ func DNSResolve(host string, timeout time.Duration) Check {
 	return func() error {
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()
+
 		addrs, err := resolver.LookupHost(ctx, host)
 		if err != nil {
 			return err
 		}
+
 		if len(addrs) < 1 {
 			return fmt.Errorf("could not resolve host")
 		}
+
 		return nil
 	}
 }

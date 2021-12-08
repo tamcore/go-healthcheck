@@ -24,9 +24,11 @@ import (
 func GoroutineCount(threshold int) Check {
 	return func() error {
 		count := runtime.NumGoroutine()
+
 		if count > threshold {
 			return fmt.Errorf("too many goroutines (%d > %d)", count, threshold)
 		}
+
 		return nil
 	}
 }

@@ -26,6 +26,7 @@ func TestDatabasePing(t *testing.T) {
 	assert.Error(t, DatabasePing(nil, 1*time.Second)(), "nil DB should fail")
 
 	db, _, err := sqlmock.New()
+
 	assert.NoError(t, err)
 	assert.NoError(t, DatabasePing(db, 1*time.Second)(), "ping should succeed")
 }

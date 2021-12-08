@@ -24,9 +24,11 @@ import (
 func TCPDial(addr string, timeout time.Duration) Check {
 	return func() error {
 		conn, err := net.DialTimeout("tcp", addr, timeout)
+
 		if err != nil {
 			return err
 		}
+
 		return conn.Close()
 	}
 }

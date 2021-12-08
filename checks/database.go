@@ -27,9 +27,11 @@ func DatabasePing(database *sql.DB, timeout time.Duration) Check {
 	return func() error {
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()
+
 		if database == nil {
 			return fmt.Errorf("database is nil")
 		}
+
 		return database.PingContext(ctx)
 	}
 }
