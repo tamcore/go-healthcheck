@@ -3,6 +3,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/heptiolabs/healthcheck)](https://goreportcard.com/report/github.com/heptiolabs/healthcheck)
 [![GoDoc](https://godoc.org/github.com/heptiolabs/healthcheck?status.svg)](https://godoc.org/github.com/heptiolabs/healthcheck) -->
 
+[![build](https://github.com/gsdenys/healthcheck/actions/workflows/build.yml/badge.svg)](https://github.com/gsdenys/healthcheck/actions/workflows/build.yml)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=coverage)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
+
 Healthcheck is a library for implementing Kubernetes [liveness and readiness](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) probe handlers in your Go application.
 
 ## Features
@@ -13,7 +18,7 @@ Healthcheck is a library for implementing Kubernetes [liveness and readiness](ht
 
  - Includes a small library of generically useful checks for validating upstream DNS, TCP, HTTP, and database dependencies as well as checking basic health of the Go runtime.
 
-## Usage
+<!-- ## Usage
 
 See the [GoDoc examples](https://godoc.org/github.com/heptiolabs/healthcheck) for more detail.
 
@@ -87,4 +92,4 @@ See the [GoDoc examples](https://godoc.org/github.com/heptiolabs/healthcheck) fo
   - **`/live`**: liveness endpoint (HTTP 200 if healthy, HTTP 503 if unhealthy)
   - **`/ready`**: readiness endpoint (HTTP 200 if healthy, HTTP 503 if unhealthy)
 
-Pass the `?full=1` query parameter to see the full check results as JSON. These are omitted by default for performance.
+Pass the `?full=1` query parameter to see the full check results as JSON. These are omitted by default for performance. -->
