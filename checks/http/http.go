@@ -12,27 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package http
 
 import (
 	"fmt"
-	"runtime"
+	"net/http"
 	"time"
+
+	"github.com/gsdenys/healthcheck/checks"
 )
 
-// GCMaxPause returns a Check that fails if any recent Go garbage
-// collection pause exceeds the provided threshold.
-func GCMaxPause(threshold time.Duration) Check {
-	thresholdNanoseconds := uint64(threshold.Nanoseconds())
+// Get returns a Check that performs an HTTP GET request against the
+// specified URL. The check fails if the response times out or returns a non-200
+// status code.
+func Get(url string, timeout time.Duration) checks.Check {
+	client := http.Client{
+		Timeout: timeout,
+
+		// never follow redirects
+		CheckRedirect: func(*http.Request, []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
 
 	return func() error {
-		var stats runtime.MemStats
-		runtime.ReadMemStats(&stats)
+		resp, err := client.Get(url)
 
-		for _, pause := range stats.PauseNs {
-			if pause > thresholdNanoseconds {
-				return fmt.Errorf("recent GC cycle took %s > %s", time.Duration(pause), threshold)
-			}
+		if err != nil {
+			return err
+		}
+
+		resp.Body.Close()
+		if resp.StatusCode != 200 {
+			return fmt.Errorf("returned status %d", resp.StatusCode)
 		}
 
 		return nil

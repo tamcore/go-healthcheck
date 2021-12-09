@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package tcp
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGoroutineCount(t *testing.T) {
-	assert.NoError(t, GoroutineCount(1000)())
-	assert.Error(t, GoroutineCount(0)())
+func TestDial(t *testing.T) {
+	assert.NoError(t, Dial("gsdenys.github.io:80", 5*time.Second)())
+	assert.Error(t, Dial("gsdenys.github.io:25327", 5*time.Second)())
 }

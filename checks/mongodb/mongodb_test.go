@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package mongodb
 
 import (
 	"context"
@@ -26,7 +26,7 @@ import (
 )
 
 func TestMongodbPingNilClient(t *testing.T) {
-	assert.Error(t, MongodbPing(nil, 1*time.Second)(), "nil Mongo Client should fail")
+	assert.Error(t, Ping(nil, 1*time.Second)(), "nil Mongo Client should fail")
 }
 
 func TestMongodbPing(t *testing.T) {
@@ -45,7 +45,7 @@ func TestMongodbPing(t *testing.T) {
 	cli, errCli := mongo.Connect(context.TODO(), clientOptions)
 
 	assert.NoError(t, errCli, "error when try to create MongoDB client.")
-	assert.NoError(t, MongodbPing(cli, 1*time.Second)())
+	assert.NoError(t, Ping(cli, 1*time.Second)())
 
 	mongoServer.Stop()
 }

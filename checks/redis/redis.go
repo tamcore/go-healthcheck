@@ -12,23 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package redis
 
 import (
-	"net"
-	"time"
+	"fmt"
+
+	"github.com/go-redis/redis"
+	"github.com/gsdenys/healthcheck/checks"
+	"github.com/pkg/errors"
 )
 
-// TCPDial returns a Check that checks TCP connectivity to the provided
-// endpoint.
-func TCPDial(addr string, timeout time.Duration) Check {
+//Ping returns a Check function that validates Redis connection.
+func Ping(client *redis.Client) checks.Check {
 	return func() error {
-		conn, err := net.DialTimeout("tcp", addr, timeout)
-
-		if err != nil {
-			return err
+		if client == nil {
+			return fmt.Errorf("redis client is nil")
 		}
 
-		return conn.Close()
+		err := (*client).Ping().Err()
+		if err != nil {
+			err = errors.Wrap(err, "Redis healthcheck failed")
+		}
+
+		return err
 	}
 }

@@ -12,37 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package goroutine
 
 import (
 	"fmt"
-	"net/http"
-	"time"
+	"runtime"
+
+	"github.com/gsdenys/healthcheck/checks"
 )
 
-// HTTPGet returns a Check that performs an HTTP GET request against the
-// specified URL. The check fails if the response times out or returns a non-200
-// status code.
-func HTTPGet(url string, timeout time.Duration) Check {
-	client := http.Client{
-		Timeout: timeout,
-
-		// never follow redirects
-		CheckRedirect: func(*http.Request, []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-
+// Count returns a Check that fails if too many goroutines are
+// running (which could indicate a resource leak).
+func Count(threshold int) checks.Check {
 	return func() error {
-		resp, err := client.Get(url)
+		count := runtime.NumGoroutine()
 
-		if err != nil {
-			return err
-		}
-
-		resp.Body.Close()
-		if resp.StatusCode != 200 {
-			return fmt.Errorf("returned status %d", resp.StatusCode)
+		if count > threshold {
+			return fmt.Errorf("too many goroutines (%d > %d)", count, threshold)
 		}
 
 		return nil

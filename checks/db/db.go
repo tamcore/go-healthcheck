@@ -12,23 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package db
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
-	"runtime"
+	"time"
+
+	"github.com/gsdenys/healthcheck/checks"
 )
 
-// GoroutineCount returns a Check that fails if too many goroutines are
-// running (which could indicate a resource leak).
-func GoroutineCount(threshold int) Check {
+// Ping returns a Check that validates connectivity to a
+// database/sql.DB using Ping().
+func Ping(database *sql.DB, timeout time.Duration) checks.Check {
 	return func() error {
-		count := runtime.NumGoroutine()
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
 
-		if count > threshold {
-			return fmt.Errorf("too many goroutines (%d > %d)", count, threshold)
+		if database == nil {
+			return fmt.Errorf("database is nil")
 		}
 
-		return nil
+		return database.PingContext(ctx)
 	}
 }

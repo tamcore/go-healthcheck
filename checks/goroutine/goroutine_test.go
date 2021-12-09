@@ -12,32 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package goroutine
 
 import (
-	"context"
-	"fmt"
-	"net"
-	"time"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-// DNSResolve returns a Check that makes sure the provided host can resolve
-// to at least one IP address within the specified timeout.
-func DNSResolve(host string, timeout time.Duration) Check {
-	resolver := net.Resolver{}
-	return func() error {
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
-		defer cancel()
-
-		addrs, err := resolver.LookupHost(ctx, host)
-		if err != nil {
-			return err
-		}
-
-		if len(addrs) < 1 {
-			return fmt.Errorf("could not resolve host")
-		}
-
-		return nil
-	}
+func TestGoroutineCount(t *testing.T) {
+	assert.NoError(t, Count(1000)())
+	assert.Error(t, Count(0)())
 }

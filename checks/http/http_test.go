@@ -12,26 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package http
 
 import (
-	"context"
-	"database/sql"
-	"fmt"
+	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
-// DatabasePing returns a Check that validates connectivity to a
-// database/sql.DB using Ping().
-func DatabasePing(database *sql.DB, timeout time.Duration) Check {
-	return func() error {
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
-		defer cancel()
-
-		if database == nil {
-			return fmt.Errorf("database is nil")
-		}
-
-		return database.PingContext(ctx)
-	}
+func TestHTTPGet(t *testing.T) {
+	assert.NoError(t, Get("https://gsdenys.github.io", 5*time.Second)())
+	assert.Error(t, Get("http://gsdenys.github.io", 5*time.Second)(), "redirect should fail")
+	assert.Error(t, Get("https://gsdenys.github.io/nonexistent", 5*time.Second)(), "404 should fail")
 }

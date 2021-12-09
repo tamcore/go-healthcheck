@@ -12,16 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package redis
 
 import (
 	"testing"
-	"time"
 
+	"github.com/alicebob/miniredis"
+	"github.com/go-redis/redis"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDNSResolve(t *testing.T) {
-	assert.NoError(t, DNSResolve("gsdenys.github.io", 5*time.Second)())
-	assert.Error(t, DNSResolve("nonexistent.abcde.fgh.ij", 5*time.Second)())
+func TestCheckRedisWithNoClient(t *testing.T) {
+	assert.Error(t, Ping(nil)(), "nil Redis client should fail")
+}
+
+func TestCheckRedisConnectionError(t *testing.T) {
+	client := redis.NewClient(&redis.Options{
+		Addr: "redis.test",
+	})
+
+	assert.Error(t, Ping(client)(), "nil Redis client should fail")
+}
+
+func TestRedisPing(t *testing.T) {
+	mr, err := miniredis.Run()
+	assert.NoError(t, err)
+
+	client := redis.NewClient(&redis.Options{
+		Addr: mr.Addr(),
+	})
+	assert.NotNil(t, client)
+
+	assert.NoError(t, Ping(client)())
 }

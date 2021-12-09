@@ -12,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package gc
 
 import (
+	"runtime"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 )
 
-func TestDatabasePing(t *testing.T) {
-	assert.Error(t, DatabasePing(nil, 1*time.Second)(), "nil DB should fail")
+func TestGCMaxPause(t *testing.T) {
+	runtime.GC()
 
-	db, _, err := sqlmock.New()
-
-	assert.NoError(t, err)
-	assert.NoError(t, DatabasePing(db, 1*time.Second)(), "ping should succeed")
+	assert.NoError(t, MaxPause(1*time.Second)())
+	assert.Error(t, MaxPause(0)())
 }

@@ -23,7 +23,7 @@ import (
 )
 
 func TestAsync(t *testing.T) {
-	async := Async(func() error {
+	async := Run(func() error {
 		time.Sleep(50 * time.Millisecond)
 		return nil
 	}, 1*time.Millisecond)
@@ -46,7 +46,7 @@ func TestAsyncWithContext(t *testing.T) {
 
 	// start an async check that counts how many times it was called
 	calls := 0
-	AsyncWithContext(ctx, func() error {
+	RunWithContext(ctx, func() error {
 		calls++
 		time.Sleep(1 * time.Millisecond)
 		return nil

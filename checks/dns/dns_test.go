@@ -12,28 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package dns
 
 import (
-	"context"
-	"fmt"
+	"testing"
 	"time"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"github.com/stretchr/testify/assert"
 )
 
-// MongodbPing returns a Check that validates connectivity to a
-// mongodb using Ping().
-func MongodbPing(client *mongo.Client, timeout time.Duration) Check {
-	return func() error {
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
-		defer cancel()
-
-		if client == nil {
-			return fmt.Errorf("mongo client is nil")
-		}
-
-		return client.Ping(ctx, readpref.Primary())
-	}
+func TestDNSResolve(t *testing.T) {
+	assert.NoError(t, Resolve("gsdenys.github.io", 5*time.Second)())
+	assert.Error(t, Resolve("nonexistent.abcde.fgh.ij", 5*time.Second)())
 }

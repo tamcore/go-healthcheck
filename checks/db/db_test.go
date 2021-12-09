@@ -12,36 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package db
 
 import (
 	"testing"
+	"time"
 
-	"github.com/alicebob/miniredis"
-	"github.com/go-redis/redis"
 	"github.com/stretchr/testify/assert"
+	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 )
 
-func TestCheckRedisWithNoClient(t *testing.T) {
-	assert.Error(t, RedisPing(nil)(), "nil Redis client should fail")
-}
+func TestDatabasePing(t *testing.T) {
+	assert.Error(t, Ping(nil, 1*time.Second)(), "nil DB should fail")
 
-func TestCheckRedisConnectionError(t *testing.T) {
-	client := redis.NewClient(&redis.Options{
-		Addr: "redis.test",
-	})
+	db, _, err := sqlmock.New()
 
-	assert.Error(t, RedisPing(client)(), "nil Redis client should fail")
-}
-
-func TestRedisPing(t *testing.T) {
-	mr, err := miniredis.Run()
 	assert.NoError(t, err)
-
-	client := redis.NewClient(&redis.Options{
-		Addr: mr.Addr(),
-	})
-	assert.NotNil(t, client)
-
-	assert.NoError(t, RedisPing(client)())
+	assert.NoError(t, Ping(db, 1*time.Second)(), "ping should succeed")
 }

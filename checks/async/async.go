@@ -26,23 +26,23 @@ import (
 // yet returned.
 var ErrNoData = errors.New("no data yet")
 
-// Async converts a Check into an asynchronous check that runs in a background
+// Run converts a Check into an asynchronous check that runs in a background
 // goroutine at a fixed interval. The check is called at a fixed rate, not with
 // a fixed delay between invocations. If your check takes longer than the
 // interval to execute, the next execution will happen immediately.
 //
 // Note: if you need to clean up the background goroutine, use AsyncWithContext().
-func Async(check checks.Check, interval time.Duration) checks.Check {
-	return AsyncWithContext(context.Background(), check, interval)
+func Run(check checks.Check, interval time.Duration) checks.Check {
+	return RunWithContext(context.Background(), check, interval)
 }
 
-// AsyncWithContext converts a Check into an asynchronous check that runs in a
+// RunWithContext converts a Check into an asynchronous check that runs in a
 // background goroutine at a fixed interval. The check is called at a fixed
 // rate, not with a fixed delay between invocations. If your check takes longer
 // than the interval to execute, the next execution will happen immediately.
 //
 // Note: if you don't need to cancel execution (because this runs forever), use Async()
-func AsyncWithContext(ctx context.Context, check checks.Check, interval time.Duration) checks.Check {
+func RunWithContext(ctx context.Context, check checks.Check, interval time.Duration) checks.Check {
 	// create a chan that will buffer the most recent check result
 	result := make(chan error, 1)
 

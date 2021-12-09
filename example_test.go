@@ -25,7 +25,9 @@ import (
 
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/gsdenys/healthcheck/checks/db"
+	"github.com/gsdenys/healthcheck/checks/dns"
+	"github.com/gsdenys/healthcheck/checks/goroutine"
 )
 
 func Example() {
@@ -38,11 +40,11 @@ func Example() {
 	upstreamHost := "upstream.example.com"
 	health.AddReadinessCheck(
 		"upstream-dep-dns",
-		checks.DNSResolve(upstreamHost, 50*time.Millisecond))
+		dns.Resolve(upstreamHost, 50*time.Millisecond))
 
 	// Add a liveness check to detect Goroutine leaks. If this fails we want
 	// to be restarted/rescheduled.
-	health.AddLivenessCheck("goroutine-threshold", checks.GoroutineCount(100))
+	health.AddLivenessCheck("goroutine-threshold", goroutine.Count(100))
 
 	// Serve http://0.0.0.0:8080/live and http://0.0.0.0:8080/ready endpoints.
 	// go http.ListenAndServe("0.0.0.0:8080", health)
@@ -67,7 +69,7 @@ func Example_database() {
 
 	// Add a readiness check to we don't receive requests unless we can reach
 	// the database with a ping in <1 second.
-	health.AddReadinessCheck("database", checks.DatabasePing(database, 1*time.Second))
+	health.AddReadinessCheck("database", db.Ping(database, 1*time.Second))
 
 	// Serve http://0.0.0.0:8080/live and http://0.0.0.0:8080/ready endpoints.
 	// go http.ListenAndServe("0.0.0.0:8080", health)

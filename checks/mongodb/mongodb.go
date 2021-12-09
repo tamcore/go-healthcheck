@@ -12,19 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package mongodb
 
 import (
-	"runtime"
-	"testing"
+	"context"
+	"fmt"
 	"time"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/gsdenys/healthcheck/checks"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-func TestGCMaxPause(t *testing.T) {
-	runtime.GC()
+// Ping returns a Check that validates connectivity to a
+// mongodb using Ping().
+func Ping(client *mongo.Client, timeout time.Duration) checks.Check {
+	return func() error {
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
 
-	assert.NoError(t, GCMaxPause(1*time.Second)())
-	assert.Error(t, GCMaxPause(0)())
+		if client == nil {
+			return fmt.Errorf("mongo client is nil")
+		}
+
+		return client.Ping(ctx, readpref.Primary())
+	}
 }

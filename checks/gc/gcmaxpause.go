@@ -12,16 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package gc
 
 import (
-	"testing"
+	"fmt"
+	"runtime"
 	"time"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/gsdenys/healthcheck/checks"
 )
 
-func TestTCPDial(t *testing.T) {
-	assert.NoError(t, TCPDial("gsdenys.github.io:80", 5*time.Second)())
-	assert.Error(t, TCPDial("gsdenys.github.io:25327", 5*time.Second)())
+// MaxPause returns a Check that fails if any recent Go garbage
+// collection pause exceeds the provided threshold.
+func MaxPause(threshold time.Duration) checks.Check {
+	thresholdNanoseconds := uint64(threshold.Nanoseconds())
+
+	return func() error {
+		var stats runtime.MemStats
+		runtime.ReadMemStats(&stats)
+
+		for _, pause := range stats.PauseNs {
+			if pause > thresholdNanoseconds {
+				return fmt.Errorf("recent GC cycle took %s > %s", time.Duration(pause), threshold)
+			}
+		}
+
+		return nil
+	}
 }

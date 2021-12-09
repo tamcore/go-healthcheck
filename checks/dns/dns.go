@@ -12,17 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package checks
+package dns
 
 import (
-	"testing"
+	"context"
+	"fmt"
+	"net"
 	"time"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/gsdenys/healthcheck/checks"
 )
 
-func TestHTTPGet(t *testing.T) {
-	assert.NoError(t, HTTPGet("https://gsdenys.github.io", 5*time.Second)())
-	assert.Error(t, HTTPGet("http://gsdenys.github.io", 5*time.Second)(), "redirect should fail")
-	assert.Error(t, HTTPGet("https://gsdenys.github.io/nonexistent", 5*time.Second)(), "404 should fail")
+// Resolve returns a Check that makes sure the provided host can resolve
+// to at least one IP address within the specified timeout.
+func Resolve(host string, timeout time.Duration) checks.Check {
+	resolver := net.Resolver{}
+	return func() error {
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
+
+		addrs, err := resolver.LookupHost(ctx, host)
+		if err != nil {
+			return err
+		}
+
+		if len(addrs) < 1 {
+			return fmt.Errorf("could not resolve host")
+		}
+
+		return nil
+	}
 }
