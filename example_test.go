@@ -65,14 +65,18 @@ func Example() {
 
 func Example_database() {
 	// Connect to a database/sql database
-	database := connectToDatabase()
+	DB := connectToDatabase()
 
 	// Create a Handler that we can use to register liveness and readiness checks.
 	health := NewHandler()
 
 	// Add a readiness check to we don't receive requests unless we can reach
-	// the database with a ping in <1 second.
-	health.AddReadinessCheck("database", db.Ping(database, 1*time.Second))
+	// the DB with a ping in <1 second.
+	health.AddReadinessCheck("db-readiness", db.Ping(DB, 1*time.Second))
+
+	// Add a liveness check to we start killing container if do not receive the DB
+	// ping in < 1 second.
+	health.AddLivenessCheck("db-liveness", db.Ping(DB, 1*time.Second))
 
 	// Serve http://0.0.0.0:8080/live and http://0.0.0.0:8080/ready endpoints.
 	go func() {

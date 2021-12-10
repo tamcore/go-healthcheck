@@ -1,12 +1,12 @@
 # healthcheck
 <!-- [![Build Status](https://travis-ci.org/heptiolabs/healthcheck.svg?branch=master)](https://travis-ci.org/heptiolabs/healthcheck)
-[![Go Report Card](https://goreportcard.com/badge/github.com/heptiolabs/healthcheck)](https://goreportcard.com/report/github.com/heptiolabs/healthcheck)
 [![GoDoc](https://godoc.org/github.com/heptiolabs/healthcheck?status.svg)](https://godoc.org/github.com/heptiolabs/healthcheck) -->
 
 [![build](https://github.com/gsdenys/healthcheck/actions/workflows/build.yml/badge.svg)](https://github.com/gsdenys/healthcheck/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=coverage)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gsdenys/healthcheck)](https://goreportcard.com/report/github.com/gsdenys/healthcheck)
 [![GoDoc](https://godoc.org/github.com/gsdenys/healthcheck?status.svg)](https://godoc.org/github.com/gsdenys/healthcheck)
 
 
@@ -87,7 +87,7 @@ Configure your Kubernetes container with HTTP liveness and readiness probes see 
 apiVersion: v1
 kind: Pod
 metadata:
-  name: heptio-healthcheck-example
+  name: healthcheck-example
 spec:
   containers:
   - name: liveness

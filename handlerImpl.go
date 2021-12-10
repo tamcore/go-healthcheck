@@ -17,6 +17,7 @@ package healthcheck
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 	"sync"
 
 	"log"
@@ -32,14 +33,41 @@ type basicHandler struct {
 	readinessChecks map[string]checks.Check
 }
 
+const (
+	liveness  = "LIVENESS_ENDPOINT"
+	readiness = "READINESS_ENDPOINT"
+
+	defaultLivenessEndpoint  = "/live"
+	defaultReadinessEndpoint = "/ready"
+)
+
+func getLivenessEndpoint() string {
+	value, hasValue := os.LookupEnv(liveness)
+	if !hasValue {
+		return defaultLivenessEndpoint
+	}
+
+	return value
+}
+
+func getreadinessEndpoint() string {
+	value, hasValue := os.LookupEnv(readiness)
+	if !hasValue {
+		return defaultReadinessEndpoint
+	}
+
+	return value
+}
+
 // NewHandler creates a new basic Handler
 func NewHandler() Handler {
 	h := &basicHandler{
 		livenessChecks:  make(map[string]checks.Check),
 		readinessChecks: make(map[string]checks.Check),
 	}
-	h.Handle("/live", http.HandlerFunc(h.LiveEndpoint))
-	h.Handle("/ready", http.HandlerFunc(h.ReadyEndpoint))
+
+	h.Handle(getLivenessEndpoint(), http.HandlerFunc(h.LiveEndpoint))
+	h.Handle(getreadinessEndpoint(), http.HandlerFunc(h.ReadyEndpoint))
 	return h
 }
 
