@@ -33,13 +33,13 @@ See the [GoDoc examples](https://godoc.org/github.com/gsdenys/healthcheck) for m
 Install dependency
  
   ```bash
-  go get -u github.com/heptiolabs/healthcheck
+  go get -u github.com/gsdenys/healthcheck
   ```
 
 Import the package 
 
 ```go
-import "github.com/heptiolabs/healthcheck"
+import "github.com/gsdenys/healthcheck"
 ```
 
 Create a `healthcheck.Handler`:
@@ -52,20 +52,17 @@ Configure some application-specific liveness checks (whether the app itself is u
 
 ```go
 // Our app is not happy if we've got more than 100 goroutines running.
-health.AddLivenessCheck("goroutine-threshold", healthcheck.GoroutineCountCheck(100))
+health.AddLivenessCheck("goroutine-threshold", goroutine.Count(100))
 ```
 
 Configure some application-specific readiness checks (whether the app is ready to serve requests):
 
 ```go
 // Our app is not ready if we can't resolve our upstream dependency in DNS.
-health.AddReadinessCheck(
-  "upstream-dep-dns",
-  healthcheck.DNSResolveCheck("upstream.example.com", 50*time.Millisecond)
-)
+health.AddReadinessCheck("upstream-dep-dns", dns.Resolve("upstream.example.com", 50*time.Millisecond))
 
-// Our app is not ready if we can't connect to our database (`var db *sql.DB`) in <1s.
-health.AddReadinessCheck("database", healthcheck.DatabasePingCheck(db, 1*time.Second))
+// Our app is not ready if we can't connect to our database (`var DB *sql.DB`) in <1s.
+health.AddReadinessCheck("database", db.Ping(DB, 1*time.Second))
 ```
 
 Expose the `/live` and `/ready` endpoints over HTTP (on port 8086):
