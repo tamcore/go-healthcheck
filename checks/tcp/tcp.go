@@ -21,7 +21,7 @@ import (
 	"github.com/gsdenys/healthcheck/checks"
 )
 
-// TCPDial returns a Check that checks TCP connectivity to the provided
+// Dial returns a Check that checks TCP connectivity to the provided
 // endpoint.
 func Dial(addr string, timeout time.Duration) checks.Check {
 	return func() error {

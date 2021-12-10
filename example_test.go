@@ -17,6 +17,7 @@ package healthcheck
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
@@ -35,19 +36,21 @@ func Example() {
 	health := NewHandler()
 
 	// Add a readiness check to make sure an upstream dependency resolves in DNS.
-	// If this fails we don't want to receive requests, but we shouldn't be
-	// restarted or rescheduled.
+	// If this fails we don't want to receive requests, but we shouldn't be restarted or rescheduled.
 	upstreamHost := "upstream.example.com"
-	health.AddReadinessCheck(
-		"upstream-dep-dns",
-		dns.Resolve(upstreamHost, 50*time.Millisecond))
+	health.AddReadinessCheck("upstream-dep-dns", dns.Resolve(upstreamHost, 50*time.Millisecond))
 
-	// Add a liveness check to detect Goroutine leaks. If this fails we want
-	// to be restarted/rescheduled.
+	// Add a liveness check to detect Goroutine leaks. If this fails we want to be restarted/rescheduled.
 	health.AddLivenessCheck("goroutine-threshold", goroutine.Count(100))
 
 	// Serve http://0.0.0.0:8080/live and http://0.0.0.0:8080/ready endpoints.
-	// go http.ListenAndServe("0.0.0.0:8080", health)
+	go func() {
+		httpError := http.ListenAndServe("0.0.0.0:8080", health)
+
+		if httpError != nil {
+			log.Println("While serving HTTP: ", httpError)
+		}
+	}()
 
 	// Make a request to the readiness endpoint and print the response.
 	fmt.Print(dumpRequest(health, "GET", "/ready"))
@@ -72,7 +75,13 @@ func Example_database() {
 	health.AddReadinessCheck("database", db.Ping(database, 1*time.Second))
 
 	// Serve http://0.0.0.0:8080/live and http://0.0.0.0:8080/ready endpoints.
-	// go http.ListenAndServe("0.0.0.0:8080", health)
+	go func() {
+		httpError := http.ListenAndServe("0.0.0.0:8080", health)
+
+		if httpError != nil {
+			log.Println("While serving HTTP: ", httpError)
+		}
+	}()
 
 	// Make a request to the readiness endpoint and print the response.
 	fmt.Print(dumpRequest(health, "GET", "/ready?full=1"))
