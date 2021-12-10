@@ -7,6 +7,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=coverage)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
+[![GoDoc](https://godoc.org/github.com/gsdenys/healthcheck?status.svg)](https://godoc.org/github.com/gsdenys/healthcheck)
+
 
 Healthcheck is a library for implementing Kubernetes [liveness and readiness](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) probe handlers in your Go application.
 
