@@ -1,0 +1,91 @@
+name: build
+
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  golangci:
+    name: Go Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: latest
+
+  build:
+    name: Build and Test
+    needs: golangci
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        goVersion: ["1.17", "1.16", "1.15", "1.14", "1.13"]
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.goVersion }}
+      
+      - name: Test and coverage executions
+        run: |
+          mkdir -p bin
+          go test ./...
+
+  sonar:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    name: SonarCloud Scan
+    
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Test and coverage executions
+        run: |
+          mkdir -p bin
+          go test -short -coverprofile=bin/cov.out ./...
+
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  Horusec:
+    runs-on: ubuntu-latest
+    needs: build
+
+    name: Horusec Scan
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Run Horusec
+        uses: fike/horusec-action@main
+        with:
+          arguments: -c=horusec-config.json

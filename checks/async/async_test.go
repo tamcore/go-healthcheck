@@ -1,4 +1,4 @@
-// Copyright 2017 by the contributors.
+// Copyright 2021 by the contributors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package healthcheck
+package async
 
 import (
 	"context"
@@ -23,7 +23,7 @@ import (
 )
 
 func TestAsync(t *testing.T) {
-	async := Async(func() error {
+	async := Run(func() error {
 		time.Sleep(50 * time.Millisecond)
 		return nil
 	}, 1*time.Millisecond)
@@ -46,7 +46,7 @@ func TestAsyncWithContext(t *testing.T) {
 
 	// start an async check that counts how many times it was called
 	calls := 0
-	AsyncWithContext(ctx, func() error {
+	RunWithContext(ctx, func() error {
 		calls++
 		time.Sleep(1 * time.Millisecond)
 		return nil

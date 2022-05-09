@@ -1,4 +1,4 @@
-// Copyright 2017 by the contributors.
+// Copyright 2021 by the contributors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,35 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package healthcheck
+package async
 
 import (
 	"context"
 	"errors"
 	"time"
+
+	"github.com/gsdenys/healthcheck/checks"
 )
 
 // ErrNoData is returned if the first call of an Async() wrapped Check has not
 // yet returned.
 var ErrNoData = errors.New("no data yet")
 
-// Async converts a Check into an asynchronous check that runs in a background
+// Run converts a Check into an asynchronous check that runs in a background
 // goroutine at a fixed interval. The check is called at a fixed rate, not with
 // a fixed delay between invocations. If your check takes longer than the
 // interval to execute, the next execution will happen immediately.
 //
 // Note: if you need to clean up the background goroutine, use AsyncWithContext().
-func Async(check Check, interval time.Duration) Check {
-	return AsyncWithContext(context.Background(), check, interval)
+func Run(check checks.Check, interval time.Duration) checks.Check {
+	return RunWithContext(context.Background(), check, interval)
 }
 
-// AsyncWithContext converts a Check into an asynchronous check that runs in a
+// RunWithContext converts a Check into an asynchronous check that runs in a
 // background goroutine at a fixed interval. The check is called at a fixed
 // rate, not with a fixed delay between invocations. If your check takes longer
 // than the interval to execute, the next execution will happen immediately.
 //
 // Note: if you don't need to cancel execution (because this runs forever), use Async()
-func AsyncWithContext(ctx context.Context, check Check, interval time.Duration) Check {
+func RunWithContext(ctx context.Context, check checks.Check, interval time.Duration) checks.Check {
 	// create a chan that will buffer the most recent check result
 	result := make(chan error, 1)
 
@@ -64,7 +66,8 @@ func AsyncWithContext(ctx context.Context, check Check, interval time.Duration) 
 		update()
 
 		// loop forever or until the context is canceled
-		ticker := time.Tick(interval)
+		// ticker := time.Tick(interval)
+		ticker := time.NewTicker(interval).C
 		for {
 			select {
 			case <-ticker:
