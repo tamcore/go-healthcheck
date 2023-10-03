@@ -20,7 +20,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // Resolve returns a Check that makes sure the provided host can resolve

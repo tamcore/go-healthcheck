@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // Ping returns a Check that validates connectivity to a

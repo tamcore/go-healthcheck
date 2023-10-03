@@ -26,9 +26,9 @@ import (
 
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
 
-	"github.com/gsdenys/healthcheck/checks/db"
-	"github.com/gsdenys/healthcheck/checks/dns"
-	"github.com/gsdenys/healthcheck/checks/goroutine"
+	"github.com/tamcore/go-healthcheck/checks/db"
+	"github.com/tamcore/go-healthcheck/checks/dns"
+	"github.com/tamcore/go-healthcheck/checks/goroutine"
 )
 
 func Example() {

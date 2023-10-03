@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // Count returns a Check that fails if too many goroutines are

@@ -1,13 +1,7 @@
 # healthcheck
-<!-- [![Build Status](https://travis-ci.org/heptiolabs/healthcheck.svg?branch=master)](https://travis-ci.org/heptiolabs/healthcheck)
-[![GoDoc](https://godoc.org/github.com/heptiolabs/healthcheck?status.svg)](https://godoc.org/github.com/heptiolabs/healthcheck) -->
-
-[![build](https://github.com/gsdenys/healthcheck/actions/workflows/build.yml/badge.svg)](https://github.com/gsdenys/healthcheck/actions/workflows/build.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=coverage)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gsdenys_healthcheck&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=gsdenys_healthcheck)
-[![Go Report Card](https://goreportcard.com/badge/github.com/gsdenys/healthcheck)](https://goreportcard.com/report/github.com/gsdenys/healthcheck)
-[![GoDoc](https://godoc.org/github.com/gsdenys/healthcheck?status.svg)](https://godoc.org/github.com/gsdenys/healthcheck)
+[![build](https://github.com/tamcore/go-healthcheck/actions/workflows/build.yml/badge.svg)](https://github.com/tamcore/go-healthcheck/actions/workflows/build.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/tamcore/go-healthcheck)](https://goreportcard.com/report/github.com/tamcore/go-healthcheck)
+[![GoDoc](https://godoc.org/github.com/tamcore/go-healthcheck?status.svg)](https://godoc.org/github.com/tamcore/go-healthcheck)
 
 
 Healthcheck is a library for implementing Kubernetes [liveness and readiness](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) probe handlers in your Go application.
@@ -30,18 +24,18 @@ Healthcheck is a library for implementing Kubernetes [liveness and readiness](ht
 
  ## Usage
 
-See the [GoDoc examples](https://godoc.org/github.com/gsdenys/healthcheck) for more detail.
+See the [GoDoc examples](https://godoc.org/github.com/tamcore/go-healthcheck) for more detail.
 
 Install dependency
  
   ```bash
-  go get -u github.com/gsdenys/healthcheck
+  go get -u github.com/tamcore/go-healthcheck
   ```
 
 Import the package 
 
 ```go
-import "github.com/gsdenys/healthcheck"
+import "github.com/tamcore/go-healthcheck"
 ```
 
 Create a `healthcheck.Handler`:

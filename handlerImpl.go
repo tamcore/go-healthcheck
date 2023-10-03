@@ -22,7 +22,7 @@ import (
 
 	"log"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // basicHandler is a basic Handler implementation.
@@ -105,8 +105,6 @@ func (s *basicHandler) collectChecks(checks map[string]checks.Check, resultsOut 
 }
 
 func (s *basicHandler) handle(w http.ResponseWriter, r *http.Request, checks ...map[string]checks.Check) {
-	log.SetPrefix("[ERROR]")
-
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return

@@ -16,22 +16,24 @@ package redis
 
 import (
 	"fmt"
+	"context"
 
-	"github.com/go-redis/redis"
-	"github.com/gsdenys/healthcheck/checks"
-	"github.com/pkg/errors"
+	"github.com/redis/go-redis/v9"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 //Ping returns a Check function that validates Redis connection.
 func Ping(client *redis.Client) checks.Check {
 	return func() error {
+		ctx := context.Background()
+
 		if client == nil {
 			return fmt.Errorf("redis client is nil")
 		}
 
-		err := (*client).Ping().Err()
+		err := (*client).Ping(ctx).Err()
 		if err != nil {
-			err = errors.Wrap(err, "Redis healthcheck failed")
+			err = fmt.Errorf("Redis healthcheck failed: %v", err)
 		}
 
 		return err

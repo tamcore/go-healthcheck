@@ -17,7 +17,7 @@ package healthcheck
 import (
 	"net/http"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // Handler is an http.Handler with additional methods that register health and

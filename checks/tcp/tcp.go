@@ -18,7 +18,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // Dial returns a Check that checks TCP connectivity to the provided

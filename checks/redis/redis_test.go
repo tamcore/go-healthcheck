@@ -17,8 +17,8 @@ package redis
 import (
 	"testing"
 
-	"github.com/alicebob/miniredis"
-	"github.com/go-redis/redis"
+	"github.com/alicebob/miniredis/v2"
+	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -19,7 +19,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // ErrNoData is returned if the first call of an Async() wrapped Check has not

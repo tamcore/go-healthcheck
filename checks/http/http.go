@@ -19,7 +19,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // Get returns a Check that performs an HTTP GET request against the

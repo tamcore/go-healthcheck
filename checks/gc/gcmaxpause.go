@@ -19,7 +19,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/gsdenys/healthcheck/checks"
+	"github.com/tamcore/go-healthcheck/checks"
 )
 
 // MaxPause returns a Check that fails if any recent Go garbage
