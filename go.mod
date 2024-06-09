@@ -25,14 +25,14 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	github.com/yuin/gopher-lua v1.1.0 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/text v0.13.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	go.mongodb.org/mongo-driver v1.12.1
+	go.mongodb.org/mongo-driver v1.15.0
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
