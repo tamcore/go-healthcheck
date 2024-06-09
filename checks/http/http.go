@@ -35,6 +35,13 @@ func Get(url string, timeout time.Duration) checks.Check {
 		},
 	}
 
+	return GetWithClient(url, client)
+}
+
+// GetWithClient returns a Check that performs an HTTP GET request against the
+// specified URL. The check fails if the response times out or returns a non-200
+// status code.
+func GetWithClient(url string, client http.Client) checks.Check {
 	return func() error {
 		resp, err := client.Get(url)
 

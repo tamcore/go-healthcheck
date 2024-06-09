@@ -42,3 +42,32 @@ func TestHTTPGet(t *testing.T) {
 	assert.Error(t, Get("http://example.com/redirect", 5*time.Second)(), "redirect should fail")
 	assert.Error(t, Get("http://example.com/nonexistent", 5*time.Second)(), "404 should fail")
 }
+
+func TestHTTPGetWithClient(t *testing.T) {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder("GET", "https://example.com",
+		func(req *http.Request) (*http.Response, error) {
+			return httpmock.NewJsonResponse(200, map[string]interface{}{})
+		},
+	)
+	httpmock.RegisterResponder("GET", "https://example.com/redirect", func(request *http.Request) (*http.Response, error) {
+		response := httpmock.NewStringResponse(http.StatusMovedPermanently, "")
+		response.Header.Set("Location", "https://example.com")
+		return response, nil
+	})
+
+	client := http.Client{
+		Timeout: 5 * time.Second,
+
+		// never follow redirects
+		CheckRedirect: func(*http.Request, []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+
+	assert.NoError(t, GetWithClient("https://example.com", client)())
+	assert.Error(t, GetWithClient("https://example.com/redirect", client)(), "redirect should fail")
+	assert.Error(t, GetWithClient("https://example.com/nonexistent", client)(), "404 should fail")
+}
