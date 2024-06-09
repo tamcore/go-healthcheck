@@ -15,14 +15,30 @@
 package http
 
 import (
+	"net/http"
 	"testing"
 	"time"
 
+	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestHTTPGet(t *testing.T) {
-	assert.NoError(t, Get("https://gsdenys.github.io", 5*time.Second)())
-	assert.Error(t, Get("http://gsdenys.github.io", 5*time.Second)(), "redirect should fail")
-	assert.Error(t, Get("https://gsdenys.github.io/nonexistent", 5*time.Second)(), "404 should fail")
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	httpmock.RegisterResponder("GET", "http://example.com",
+		func(req *http.Request) (*http.Response, error) {
+			return httpmock.NewJsonResponse(200, map[string]interface{}{})
+		},
+	)
+	httpmock.RegisterResponder("GET", "http://example.com/redirect", func(request *http.Request) (*http.Response, error) {
+		response := httpmock.NewStringResponse(http.StatusMovedPermanently, "")
+		response.Header.Set("Location", "https://example.com")
+		return response, nil
+	})
+
+	assert.NoError(t, Get("http://example.com", 5*time.Second)())
+	assert.Error(t, Get("http://example.com/redirect", 5*time.Second)(), "redirect should fail")
+	assert.Error(t, Get("http://example.com/nonexistent", 5*time.Second)(), "404 should fail")
 }

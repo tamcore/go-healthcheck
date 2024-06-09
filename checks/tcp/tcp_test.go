@@ -22,6 +22,6 @@ import (
 )
 
 func TestDial(t *testing.T) {
-	assert.NoError(t, Dial("gsdenys.github.io:80", 5*time.Second)())
-	assert.Error(t, Dial("gsdenys.github.io:25327", 5*time.Second)())
+	assert.NoError(t, Dial("example.com:80", 5*time.Second)())
+	assert.Error(t, Dial("example.com:25327", 5*time.Second)())
 }

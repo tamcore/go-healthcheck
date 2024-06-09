@@ -22,6 +22,6 @@ import (
 )
 
 func TestDNSResolve(t *testing.T) {
-	assert.NoError(t, Resolve("gsdenys.github.io", 5*time.Second)())
-	assert.Error(t, Resolve("nonexistent.abcde.fgh.ij", 5*time.Second)())
+	assert.NoError(t, Resolve("example.com", 5*time.Second)())
+	assert.Error(t, Resolve("nonexistent.example.com", 5*time.Second)())
 }

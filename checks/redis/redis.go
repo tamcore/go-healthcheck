@@ -15,14 +15,14 @@
 package redis
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/tamcore/go-healthcheck/checks"
 )
 
-//Ping returns a Check function that validates Redis connection.
+// Ping returns a Check function that validates Redis connection.
 func Ping(client *redis.Client) checks.Check {
 	return func() error {
 		ctx := context.Background()
