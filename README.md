@@ -1,5 +1,5 @@
 # healthcheck
-[![build](https://github.com/tamcore/go-healthcheck/actions/workflows/build.yml/badge.svg)](https://github.com/tamcore/go-healthcheck/actions/workflows/build.yml)
+[![ci](https://github.com/tamcore/go-healthcheck/actions/workflows/ci.yaml/badge.svg)](https://github.com/tamcore/go-healthcheck/actions/workflows/ci.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/tamcore/go-healthcheck)](https://goreportcard.com/report/github.com/tamcore/go-healthcheck)
 [![GoDoc](https://godoc.org/github.com/tamcore/go-healthcheck?status.svg)](https://godoc.org/github.com/tamcore/go-healthcheck)
 
