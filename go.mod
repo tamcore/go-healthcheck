@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/alicebob/miniredis/v2 v2.30.5
-	github.com/redis/go-redis/v9 v9.2.1
+	github.com/redis/go-redis/v9 v9.5.3
 	github.com/stretchr/testify v1.8.4
 	github.com/strikesecurity/strikememongo v0.2.4
 	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
