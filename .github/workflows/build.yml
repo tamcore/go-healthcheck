@@ -9,7 +9,6 @@ on:
     branches: [ master ]
 
 jobs:
-
   golangci:
     name: Go Lint
     runs-on: ubuntu-latest
@@ -33,7 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        goVersion: ["1.19", "1.20", "1.21"]
+        goVersion: ["1.20", "1.21", "1.22"]
 
     steps:
       - name: Clone Repository
