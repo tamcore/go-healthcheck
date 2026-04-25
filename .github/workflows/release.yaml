@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Generate changelog
-        uses: requarks/changelog-action@v1.10.2
+        uses: requarks/changelog-action@b78a3354a01f4a1affb484b9264b506a815c46b1 # v1.10.3
         id: changelog
         with:
           token: ${{ github.token }}
