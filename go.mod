@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/alicebob/miniredis/v2 v2.33.0
-	github.com/jarcoal/httpmock v1.3.1
+	github.com/jarcoal/httpmock v1.4.2
 	github.com/redis/go-redis/v9 v9.5.3
 	github.com/stretchr/testify v1.9.0
 	github.com/strikesecurity/strikememongo v0.2.4
