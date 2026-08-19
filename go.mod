@@ -6,10 +6,12 @@ require (
 	github.com/alicebob/miniredis/v2 v2.33.0
 	github.com/jarcoal/httpmock v1.3.1
 	github.com/redis/go-redis/v9 v9.5.3
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.12.1
 	github.com/strikesecurity/strikememongo v0.2.4
 	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
 )
+
+require go.yaml.in/yaml/v3 v3.0.5 // indirect
 
 require (
 	github.com/acobaugh/osrelease v0.1.0 // indirect
